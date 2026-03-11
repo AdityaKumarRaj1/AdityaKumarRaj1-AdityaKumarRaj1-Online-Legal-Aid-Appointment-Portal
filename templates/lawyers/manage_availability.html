@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Availability - Legal Aid Portal{% endblock %}
+
+{% block content %}
+<section class="section-padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold mb-4" style="font-family: var(--font-display);">
+                    <i class="bi bi-clock me-2"></i>Manage Availability
+                </h2>
+
+                <!-- Add new slot -->
+                <div class="card-custom mb-4">
+                    <div class="card-header-custom">Add Availability Slot</div>
+                    <div class="card-body">
+                        <form method="post" class="row g-3">
+                            {% csrf_token %}
+                            <div class="col-md-4">
+                                <label class="form-label">Day</label>
+                                {{ form.day }}
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Start Time</label>
+                                {{ form.start_time }}
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">End Time</label>
+                                {{ form.end_time }}
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary-custom w-100">
+                                    <i class="bi bi-plus-lg"></i> Add
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Current slots -->
+                <div class="card-custom">
+                    <div class="card-header-custom">Current Availability Slots</div>
+                    <div class="card-body p-0">
+                        {% if slots %}
+                        <table class="table table-custom mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Day</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for slot in slots %}
+                                <tr>
+                                    <td class="fw-semibold">{{ slot.get_day_display }}</td>
+                                    <td>{{ slot.start_time|time:"g:i A" }}</td>
+                                    <td>{{ slot.end_time|time:"g:i A" }}</td>
+                                    <td>
+                                        <span
+                                            class="badge {% if slot.is_active %}bg-success{% else %}bg-secondary{% endif %}">
+                                            {% if slot.is_active %}Active{% else %}Inactive{% endif %}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'lawyers:delete_availability' slot.pk %}"
+                                            class="btn btn-sm btn-outline-danger"
+                                            data-confirm="Delete this availability slot?">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-clock display-4 text-muted"></i>
+                            <p class="text-muted mt-2">No availability slots set yet. Add one above.</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <a href="{% url 'lawyers:dashboard' %}" class="btn btn-outline-secondary mt-3">
+                    <i class="bi bi-arrow-left me-1"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

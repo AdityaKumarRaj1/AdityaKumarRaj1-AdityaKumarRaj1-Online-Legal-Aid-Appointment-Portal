@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Legal Aid Portal{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="background: var(--gray-50);">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold mb-1" style="font-family: var(--font-display);">
+                    <i class="bi bi-speedometer2 me-2"></i>My Dashboard
+                </h2>
+                <p class="text-muted mb-0">Welcome back, {{ request.user.get_full_name }}!</p>
+            </div>
+            <a href="{% url 'lawyers:list' %}" class="btn btn-accent">
+                <i class="bi bi-plus-lg me-1"></i>Book Appointment
+            </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="row g-3 mb-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card stat-primary">
+                    <div class="stat-number">{{ stats.total }}</div>
+                    <div class="stat-label">Total Appointments</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card stat-warning">
+                    <div class="stat-number">{{ stats.pending }}</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card stat-success">
+                    <div class="stat-number">{{ stats.accepted }}</div>
+                    <div class="stat-label">Accepted</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card stat-info">
+                    <div class="stat-number">{{ stats.completed }}</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Appointments -->
+        {% if upcoming %}
+        <div class="card-custom mb-4">
+            <div class="card-header-custom" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0);">
+                <i class="bi bi-calendar-event me-2 text-success"></i>
+                <span class="text-success fw-bold">Upcoming Appointments</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-custom mb-0">
+                        <thead>
+                            <tr>
+                                <th>Ref</th>
+                                <th>Lawyer</th>
+                                <th>Date & Time</th>
+                                <th>Subject</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for apt in upcoming %}
+                            <tr>
+                                <td><strong>APT-{{ apt.id }}</strong></td>
+                                <td>Adv. {{ apt.lawyer.full_name }}</td>
+                                <td>{{ apt.appointment_date|date:"d M Y" }} at {{ apt.appointment_time|time:"g:i A" }}
+                                </td>
+                                <td>{{ apt.subject|truncatechars:30 }}</td>
+                                <td>
+                                    <a href="{% url 'appointments:detail' apt.id %}"
+                                        class="btn btn-sm btn-outline-primary">View</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Recent Appointments -->
+        <div class="card-custom">
+            <div class="card-header-custom d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-clock-history me-2"></i>Recent Appointments</span>
+                <a href="{% url 'appointments:list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="card-body p-0">
+                {% if appointments %}
+                <div class="table-responsive">
+                    <table class="table table-custom mb-0">
+                        <thead>
+                            <tr>
+                                <th>Ref</th>
+                                <th>Lawyer</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for apt in appointments %}
+                            <tr>
+                                <td><strong>APT-{{ apt.id }}</strong></td>
+                                <td>Adv. {{ apt.lawyer.full_name }}</td>
+                                <td><span class="specialization-badge">{{ apt.category.name|default:"N/A" }}</span></td>
+                                <td>{{ apt.appointment_date|date:"d M Y" }}</td>
+                                <td><span class="badge {{ apt.status_badge_class }}">{{ apt.get_status_display }}</span>
+                                </td>
+                                <td>
+                                    <a href="{% url 'appointments:detail' apt.id %}"
+                                        class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="bi bi-calendar-x display-4 text-muted"></i>
+                    <p class="text-muted mt-2">No appointments yet. Find a lawyer to get started!</p>
+                    <a href="{% url 'lawyers:list' %}" class="btn btn-primary-custom">Find Lawyers</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

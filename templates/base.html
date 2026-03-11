@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Online Legal Aid Appointment Portal - Simplifying legal aid access for citizens. Book appointments with verified lawyers.">
+    <meta name="keywords" content="legal aid, lawyer appointment, legal services, law consultation">
+    <title>{% block title %}Legal Aid Portal{% endblock %}</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <span class="brand-icon"><i class="bi bi-shield-check"></i></span>
+                LegalAid Portal
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="bi bi-list text-white" style="font-size: 1.5rem;"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}"><i class="bi bi-house-door me-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'lawyers:list' %}"><i class="bi bi-people me-1"></i>Find
+                            Lawyers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'categories:list' %}"><i
+                                class="bi bi-grid me-1"></i>Categories</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'appointments:list' %}"><i
+                                class="bi bi-calendar-check me-1"></i>Appointments</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:home' %}">
+                            <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1"></i>{{ user.get_full_name|default:user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}"><i
+                                        class="bi bi-person me-2"></i>Profile</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="{% url 'accounts:logout' %}"><i
+                                        class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:login' %}"><i
+                                class="bi bi-box-arrow-in-right me-1"></i>Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-accent btn-sm ms-2" href="{% url 'accounts:register_citizen' %}">
+                            <i class="bi bi-person-plus me-1"></i>Register
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-custom alert-dismissible fade show" role="alert">
+            {% if message.tags == 'success' %}
+            <i class="bi bi-check-circle-fill me-2"></i>
+            {% elif message.tags == 'error' or message.tags == 'danger' %}
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {% elif message.tags == 'warning' %}
+            <i class="bi bi-exclamation-circle-fill me-2"></i>
+            {% else %}
+            <i class="bi bi-info-circle-fill me-2"></i>
+            {% endif %}
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5><i class="bi bi-shield-check me-2"></i>LegalAid Portal</h5>
+                    <p class="mb-3" style="font-size: 0.9rem;">
+                        Simplifying legal aid access for every citizen. Connect with verified lawyers
+                        and schedule consultations with ease.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="fs-5"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="fs-5"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="fs-5"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="fs-5"><i class="bi bi-envelope"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="mb-2"><a href="{% url 'lawyers:list' %}">Find Lawyers</a></li>
+                        <li class="mb-2"><a href="{% url 'categories:list' %}">Categories</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5>For Lawyers</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'accounts:register_lawyer' %}">Register</a></li>
+                        <li class="mb-2"><a href="{% url 'accounts:login' %}">Login</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4 mb-4">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled" style="font-size: 0.9rem;">
+                        <li class="mb-2"><i class="bi bi-envelope me-2"></i>support@legalaidportal.com</li>
+                        <li class="mb-2"><i class="bi bi-telephone me-2"></i>+91 1800-XXX-XXXX</li>
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i>New Delhi, India</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom text-center">
+                <p class="mb-0">&copy; 2026 Legal Aid Appointment Portal. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

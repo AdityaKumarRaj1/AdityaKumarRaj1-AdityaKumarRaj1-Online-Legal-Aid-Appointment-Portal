@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Legal Aid Appointment Portal{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <span class="hero-badge">⚖️ Trusted Legal Aid Platform</span>
+                <h1>Access Justice,<br><span class="text-gradient">Made Simple.</span></h1>
+                <p class="lead mb-4">
+                    Connect with verified lawyers across India. Book appointments, upload documents,
+                    and track your legal journey — all from one portal.
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{% url 'lawyers:list' %}" class="btn btn-accent btn-lg">
+                        <i class="bi bi-search me-2"></i>Find a Lawyer
+                    </a>
+                    <a href="{% url 'accounts:register_citizen' %}" class="btn btn-outline-custom btn-lg">
+                        <i class="bi bi-person-plus me-2"></i>Get Started Free
+                    </a>
+                </div>
+                <div class="d-flex gap-4 mt-4" style="opacity: 0.8;">
+                    <small><i class="bi bi-check-circle-fill me-1"></i> 100% Free for Citizens</small>
+                    <small><i class="bi bi-check-circle-fill me-1"></i> Verified Lawyers</small>
+                    <small><i class="bi bi-check-circle-fill me-1"></i> Secure & Private</small>
+                </div>
+            </div>
+            <div class="col-lg-5 d-none d-lg-block text-center">
+                <div class="glass-effect p-4 rounded-4 mt-3" style="max-width: 380px; margin-left: auto;">
+                    <div class="text-start mb-3">
+                        <small class="text-uppercase fw-bold" style="letter-spacing: 1px; opacity: 0.7;">Quick
+                            Actions</small>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'lawyers:list' %}" class="btn btn-light btn-sm text-start py-2">
+                            <i class="bi bi-people-fill me-2 text-primary"></i>Browse Verified Lawyers
+                        </a>
+                        <a href="{% url 'categories:list' %}" class="btn btn-light btn-sm text-start py-2">
+                            <i class="bi bi-grid-fill me-2 text-success"></i>Legal Categories
+                        </a>
+                        <a href="{% url 'accounts:register_lawyer' %}" class="btn btn-light btn-sm text-start py-2">
+                            <i class="bi bi-briefcase-fill me-2 text-warning"></i>Register as Lawyer
+                        </a>
+                    </div>
+                    <hr style="border-color: rgba(255,255,255,0.2);">
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <div class="fw-bold fs-5">500+</div>
+                            <small style="opacity: 0.7;">Lawyers</small>
+                        </div>
+                        <div class="col-4">
+                            <div class="fw-bold fs-5">10K+</div>
+                            <small style="opacity: 0.7;">Citizens</small>
+                        </div>
+                        <div class="col-4">
+                            <div class="fw-bold fs-5">15K+</div>
+                            <small style="opacity: 0.7;">Cases</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="section-padding">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">How It Works</h2>
+            <div class="divider"></div>
+            <p class="section-subtitle">Get legal help in four simple steps</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card h-100">
+                    <div class="feature-icon icon-blue">
+                        <i class="bi bi-person-plus"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">1. Register</h5>
+                    <p class="text-muted mb-0">Create your free account as a citizen. It takes less than 2 minutes.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card h-100">
+                    <div class="feature-icon icon-green">
+                        <i class="bi bi-search"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">2. Find Lawyer</h5>
+                    <p class="text-muted mb-0">Search by category, experience, or name. Browse verified legal
+                        professionals.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card h-100">
+                    <div class="feature-icon icon-amber">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">3. Book Slot</h5>
+                    <p class="text-muted mb-0">Choose a convenient date and time. Upload any relevant documents.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card h-100">
+                    <div class="feature-icon icon-purple">
+                        <i class="bi bi-clipboard-check"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">4. Track Status</h5>
+                    <p class="text-muted mb-0">Monitor your appointment status in real time from your dashboard.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="section-padding" style="background: linear-gradient(135deg, var(--gray-50), var(--primary-50));">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <span class="hero-badge"
+                    style="background: rgba(30,58,138,0.1); border-color: rgba(30,58,138,0.3); color: var(--primary-500);">
+                    Why Choose Us
+                </span>
+                <h2 class="section-title mt-3">Trusted by Thousands of Citizens</h2>
+                <div class="divider" style="margin-left: 0;"></div>
+                <p class="text-muted mb-4">
+                    Our platform bridges the gap between citizens seeking legal aid and qualified
+                    legal professionals. Every lawyer is verified and every interaction is secure.
+                </p>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="bg-success bg-opacity-10 p-2 rounded">
+                                <i class="bi bi-shield-check text-success fs-4"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Verified Lawyers</h6>
+                                <small class="text-muted">Bar Council verified professionals</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="bg-primary bg-opacity-10 p-2 rounded">
+                                <i class="bi bi-lock text-primary fs-4"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Data Privacy</h6>
+                                <small class="text-muted">Encrypted & confidential</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="bg-warning bg-opacity-10 p-2 rounded">
+                                <i class="bi bi-clock text-warning fs-4"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Quick Booking</h6>
+                                <small class="text-muted">Book in under 2 minutes</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="bg-info bg-opacity-10 p-2 rounded">
+                                <i class="bi bi-phone text-info fs-4"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Mobile Ready</h6>
+                                <small class="text-muted">Works on all devices</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="stat-card stat-primary">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Verified Lawyers</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-card stat-success">
+                            <div class="stat-number">10K+</div>
+                            <div class="stat-label">Citizens Served</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-card stat-warning">
+                            <div class="stat-number">15K+</div>
+                            <div class="stat-label">Appointments</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-card stat-info">
+                            <div class="stat-number">20+</div>
+                            <div class="stat-label">Legal Categories</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section-padding text-center"
+    style="background: linear-gradient(135deg, var(--primary-800), var(--primary-600));">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="text-white mb-3" style="font-family: var(--font-display);">
+                    Ready to Get Legal Help?
+                </h2>
+                <p class="text-white-50 mb-4 fs-5">
+                    Join thousands of citizens who have found trusted legal aid through our platform.
+                </p>
+                <div class="d-flex gap-3 justify-content-center">
+                    <a href="{% url 'accounts:register_citizen' %}" class="btn btn-accent btn-lg">
+                        Register as Citizen
+                    </a>
+                    <a href="{% url 'accounts:register_lawyer' %}" class="btn btn-outline-custom btn-lg">
+                        Register as Lawyer
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

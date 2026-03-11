@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Book Appointment - Adv. {{ lawyer.user.get_full_name }} - Legal Aid Portal{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="background: var(--gray-50);">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="form-container">
+                    <h2 class="form-title"><i class="bi bi-calendar-plus me-2"></i>Book Appointment</h2>
+                    <p class="form-subtitle">Schedule a consultation with Adv. {{ lawyer.user.get_full_name }}</p>
+
+                    <form method="post" id="booking-form">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label">Legal Category</label>
+                                {{ form.category }}
+                                {% if form.category.errors %}<div class="text-danger small mt-1">{{
+                                    form.category.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Subject</label>
+                                {{ form.subject }}
+                                {% if form.subject.errors %}<div class="text-danger small mt-1">{{ form.subject.errors.0
+                                    }}</div>{% endif %}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Description of Your Legal Issue</label>
+                                {{ form.description }}
+                                {% if form.description.errors %}<div class="text-danger small mt-1">{{
+                                    form.description.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Appointment Date</label>
+                                {{ form.appointment_date }}
+                                {% if form.appointment_date.errors %}<div class="text-danger small mt-1">{{
+                                    form.appointment_date.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Preferred Time</label>
+                                {{ form.appointment_time }}
+                                {% if form.appointment_time.errors %}<div class="text-danger small mt-1">{{
+                                    form.appointment_time.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Priority</label>
+                                {{ form.priority }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Additional Notes <small
+                                        class="text-muted">(optional)</small></label>
+                                {{ form.citizen_notes }}
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-accent w-100 mt-4 py-2">
+                            <i class="bi bi-calendar-check me-2"></i>Confirm Booking
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Lawyer Summary -->
+            <div class="col-lg-4">
+                <div class="card-custom mb-4">
+                    <div class="card-header-custom">
+                        <i class="bi bi-person-badge me-2"></i>Lawyer Details
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="lawyer-avatar mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.2rem;">
+                            {{ lawyer.user.first_name.0 }}{{ lawyer.user.last_name.0 }}
+                        </div>
+                        <h5 class="fw-bold mb-1">Adv. {{ lawyer.user.get_full_name }}</h5>
+                        <p class="text-muted small mb-2">{{ lawyer.qualification|default:"LLB" }}</p>
+                        <span class="lawyer-badge mb-2"><i class="bi bi-patch-check-fill"></i> Verified</span>
+                        <hr>
+                        <div class="d-flex justify-content-around text-center">
+                            <div>
+                                <div class="fw-bold">{{ lawyer.experience_years }}</div>
+                                <small class="text-muted">Yrs Exp</small>
+                            </div>
+                            <div>
+                                <div class="fw-bold text-success">
+                                    {% if lawyer.consultation_fee > 0 %}₹{{ lawyer.consultation_fee }}{% else %}Free{%
+                                    endif %}
+                                </div>
+                                <small class="text-muted">Fee</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-custom">
+                    <div class="card-header-custom">
+                        <i class="bi bi-info-circle me-2"></i>Booking Info
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0 small">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Appointment requires
+                                lawyer approval</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>You can upload
+                                documents after booking</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Track status from your
+                                dashboard</li>
+                            <li class="mb-0"><i class="bi bi-check-circle text-success me-2"></i>Cancel anytime before
+                                approval</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

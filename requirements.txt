@@ -1,0 +1,16 @@
+# Core
+Django>=5.0,<6.0
+djangorestframework>=3.14,<4.0
+Pillow>=10.0
+
+# Database
+psycopg2-binary>=2.9
+
+# Production Server
+gunicorn>=21.2
+
+# Security
+python-dotenv>=1.0
+
+# Development
+django-debug-toolbar>=4.2

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - Legal Aid Portal{% endblock %}
+
+{% block content %}
+<section class="section-padding"
+    style="background: linear-gradient(135deg, var(--gray-50), var(--primary-50)); min-height: 80vh;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="form-container animate-in">
+                    <div class="text-center mb-4">
+                        <div class="feature-icon icon-blue mx-auto mb-3"
+                            style="width: 56px; height: 56px; font-size: 1.4rem;">
+                            <i class="bi bi-person-plus"></i>
+                        </div>
+                        <h2 class="form-title">Create Account</h2>
+                        <p class="form-subtitle">Register as a citizen to access legal aid services</p>
+                    </div>
+
+                    <form method="post" id="register-form">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="id_first_name" class="form-label">First Name</label>
+                                {{ form.first_name }}
+                                {% if form.first_name.errors %}
+                                <div class="text-danger small mt-1">{{ form.first_name.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_last_name" class="form-label">Last Name</label>
+                                {{ form.last_name }}
+                                {% if form.last_name.errors %}
+                                <div class="text-danger small mt-1">{{ form.last_name.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-12">
+                                <label for="id_username" class="form-label">Username</label>
+                                {{ form.username }}
+                                {% if form.username.errors %}
+                                <div class="text-danger small mt-1">{{ form.username.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-12">
+                                <label for="id_email" class="form-label">Email Address</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-12">
+                                <label for="id_phone" class="form-label">Phone Number <small
+                                        class="text-muted">(optional)</small></label>
+                                {{ form.phone }}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_password1" class="form-label">Password</label>
+                                {{ form.password1 }}
+                                {% if form.password1.errors %}
+                                <div class="text-danger small mt-1">{{ form.password1.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_password2" class="form-label">Confirm Password</label>
+                                {{ form.password2 }}
+                                {% if form.password2.errors %}
+                                <div class="text-danger small mt-1">{{ form.password2.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary-custom w-100 mt-4 py-2">
+                            <i class="bi bi-check-circle me-2"></i>Create Account
+                        </button>
+                    </form>
+
+                    <hr class="my-4">
+                    <div class="text-center">
+                        <p class="text-muted mb-2">Already have an account?
+                            <a href="{% url 'accounts:login' %}" class="fw-bold text-decoration-none"
+                                style="color: var(--primary-500);">Login here</a>
+                        </p>
+                        <p class="text-muted mb-0">
+                            <small>Are you a lawyer?
+                                <a href="{% url 'accounts:register_lawyer' %}" class="fw-bold text-decoration-none"
+                                    style="color: var(--accent-500);">Register as Lawyer</a>
+                            </small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

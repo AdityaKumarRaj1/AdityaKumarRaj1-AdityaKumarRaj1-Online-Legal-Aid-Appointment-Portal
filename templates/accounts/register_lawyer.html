@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block title %}Register as Lawyer - Legal Aid Portal{% endblock %}
+
+{% block content %}
+<section class="section-padding"
+    style="background: linear-gradient(135deg, var(--gray-50), var(--primary-50)); min-height: 80vh;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="form-container animate-in">
+                    <div class="text-center mb-4">
+                        <div class="feature-icon icon-amber mx-auto mb-3"
+                            style="width: 56px; height: 56px; font-size: 1.4rem;">
+                            <i class="bi bi-briefcase"></i>
+                        </div>
+                        <h2 class="form-title">Lawyer Registration</h2>
+                        <p class="form-subtitle">Join our network of verified legal professionals</p>
+                    </div>
+
+                    <form method="post" enctype="multipart/form-data" id="lawyer-register-form">
+                        {% csrf_token %}
+
+                        <!-- Personal Information -->
+                        <h5 class="fw-bold text-primary mb-3"><i class="bi bi-person me-2"></i>Personal Information</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">First Name</label>
+                                {{ user_form.first_name }}
+                                {% if user_form.first_name.errors %}<div class="text-danger small mt-1">{{
+                                    user_form.first_name.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Last Name</label>
+                                {{ user_form.last_name }}
+                                {% if user_form.last_name.errors %}<div class="text-danger small mt-1">{{
+                                    user_form.last_name.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Username</label>
+                                {{ user_form.username }}
+                                {% if user_form.username.errors %}<div class="text-danger small mt-1">{{
+                                    user_form.username.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                {{ user_form.email }}
+                                {% if user_form.email.errors %}<div class="text-danger small mt-1">{{
+                                    user_form.email.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Phone</label>
+                                {{ user_form.phone }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Password</label>
+                                {{ user_form.password1 }}
+                                {% if user_form.password1.errors %}<div class="text-danger small mt-1">{{
+                                    user_form.password1.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Confirm Password</label>
+                                {{ user_form.password2 }}
+                                {% if user_form.password2.errors %}<div class="text-danger small mt-1">{{
+                                    user_form.password2.errors.0 }}</div>{% endif %}
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- Professional Information -->
+                        <h5 class="fw-bold text-primary mb-3 mt-4"><i class="bi bi-briefcase me-2"></i>Professional
+                            Information</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Bar Council ID</label>
+                                {{ profile_form.bar_council_id }}
+                                {% if profile_form.bar_council_id.errors %}<div class="text-danger small mt-1">{{
+                                    profile_form.bar_council_id.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Years of Experience</label>
+                                {{ profile_form.experience_years }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Qualification</label>
+                                {{ profile_form.qualification }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Consultation Fee (₹)</label>
+                                {{ profile_form.consultation_fee }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Bio / About</label>
+                                {{ profile_form.bio }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Office Address</label>
+                                {{ profile_form.office_address }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Specializations</label>
+                                <div class="row">
+                                    {% for checkbox in profile_form.specializations %}
+                                    <div class="col-md-4 col-6">
+                                        <div class="form-check mb-2">
+                                            {{ checkbox }}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Verification Document</label>
+                                {{ profile_form.verification_document }}
+                                <small class="text-muted d-block mt-1">Upload your Bar Council certificate or ID (PDF,
+                                    JPG, PNG)</small>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info alert-custom">
+                            <i class="bi bi-info-circle-fill me-2"></i>
+                            Your profile will be reviewed and verified by our admin team before you start receiving
+                            appointments.
+                        </div>
+
+                        <button type="submit" class="btn btn-accent w-100 py-2">
+                            <i class="bi bi-check-circle me-2"></i>Submit Registration
+                        </button>
+                    </form>
+
+                    <hr class="my-4">
+                    <div class="text-center">
+                        <p class="text-muted mb-0">Already registered?
+                            <a href="{% url 'accounts:login' %}" class="fw-bold text-decoration-none"
+                                style="color: var(--primary-500);">Login here</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

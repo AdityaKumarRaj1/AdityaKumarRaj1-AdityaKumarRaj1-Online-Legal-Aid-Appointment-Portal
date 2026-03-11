@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}My Appointments - Legal Aid Portal{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="background: var(--gray-50);">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold" style="font-family: var(--font-display);">
+                <i class="bi bi-calendar-check me-2"></i>My Appointments
+            </h2>
+            {% if user.is_citizen %}
+            <a href="{% url 'lawyers:list' %}" class="btn btn-accent">
+                <i class="bi bi-plus-lg me-1"></i>New Appointment
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- Filters -->
+        <div class="mb-4">
+            <form method="get" class="d-flex gap-2 flex-wrap">
+                <a href="{% url 'appointments:list' %}"
+                    class="btn btn-sm {% if not status_filter %}btn-primary-custom{% else %}btn-outline-secondary{% endif %}">
+                    All
+                </a>
+                {% for value, label in status_choices %}
+                <a href="?status={{ value }}"
+                    class="btn btn-sm {% if status_filter == value %}btn-primary-custom{% else %}btn-outline-secondary{% endif %}">
+                    {{ label }}
+                </a>
+                {% endfor %}
+            </form>
+        </div>
+
+        {% if appointments %}
+        <div class="card-custom">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-custom mb-0">
+                        <thead>
+                            <tr>
+                                <th>Reference</th>
+                                {% if user.is_citizen %}
+                                <th>Lawyer</th>
+                                {% else %}
+                                <th>Client</th>
+                                {% endif %}
+                                <th>Category</th>
+                                <th>Subject</th>
+                                <th>Date & Time</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for apt in appointments %}
+                            <tr>
+                                <td><strong>APT-{{ apt.id }}</strong></td>
+                                {% if user.is_citizen %}
+                                <td>Adv. {{ apt.lawyer.full_name }}</td>
+                                {% else %}
+                                <td>{{ apt.citizen.get_full_name }}</td>
+                                {% endif %}
+                                <td><span class="specialization-badge">{{ apt.category.name|default:"N/A" }}</span></td>
+                                <td>{{ apt.subject|truncatechars:30 }}</td>
+                                <td>
+                                    {{ apt.appointment_date|date:"d M Y" }}<br>
+                                    <small class="text-muted">{{ apt.appointment_time|time:"g:i A" }}</small>
+                                </td>
+                                <td><span class="badge {{ apt.status_badge_class }}">{{ apt.get_status_display }}</span>
+                                </td>
+                                <td>
+                                    <a href="{% url 'appointments:detail' apt.id %}"
+                                        class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="bi bi-calendar-x display-1 text-muted"></i>
+            <h4 class="text-muted mt-3">No appointments found</h4>
+            {% if user.is_citizen %}
+            <p class="text-muted">Start by finding a lawyer and booking your first appointment.</p>
+            <a href="{% url 'lawyers:list' %}" class="btn btn-primary-custom">Find Lawyers</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

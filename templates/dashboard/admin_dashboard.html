@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - Legal Aid Portal{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="background: var(--gray-50);">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold mb-1" style="font-family: var(--font-display);">
+                    <i class="bi bi-gear-wide-connected me-2"></i>Admin Dashboard
+                </h2>
+                <p class="text-muted mb-0">System overview and management</p>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{% url 'dashboard:admin_manage_users' %}" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-people me-1"></i>Manage Users
+                </a>
+                <a href="{% url 'dashboard:admin_manage_categories' %}" class="btn btn-sm btn-outline-success">
+                    <i class="bi bi-grid me-1"></i>Categories
+                </a>
+                <a href="{% url 'dashboard:admin_all_appointments' %}" class="btn btn-sm btn-outline-warning">
+                    <i class="bi bi-calendar me-1"></i>Appointments
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats Row 1: Users -->
+        <div class="row g-3 mb-4">
+            <div class="col-lg-2 col-md-4">
+                <div class="stat-card stat-primary">
+                    <div class="stat-number">{{ total_users }}</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <div class="stat-card stat-info">
+                    <div class="stat-number">{{ total_citizens }}</div>
+                    <div class="stat-label">Citizens</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <div class="stat-card stat-success">
+                    <div class="stat-number">{{ verified_lawyers }}</div>
+                    <div class="stat-label">Verified Lawyers</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <div class="stat-card stat-warning">
+                    <div class="stat-number">{{ pending_verification }}</div>
+                    <div class="stat-label">Pending Verify</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <div class="stat-card" style="background: linear-gradient(135deg, #7c3aed, #6d28d9);">
+                    <div class="stat-number">{{ total_appointments }}</div>
+                    <div class="stat-label">Appointments</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <div class="stat-card stat-danger">
+                    <div class="stat-number">{{ appointment_by_status.PENDING|default:"0" }}</div>
+                    <div class="stat-label">Pending Apts</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Pending Lawyer Verifications -->
+            <div class="col-lg-6">
+                <div class="card-custom h-100">
+                    <div class="card-header-custom">
+                        <i class="bi bi-shield-exclamation me-2"></i>Pending Lawyer Verifications ({{
+                        pending_lawyers|length }})
+                    </div>
+                    <div class="card-body">
+                        {% if pending_lawyers %}
+                        {% for lawyer in pending_lawyers %}
+                        <div class="d-flex justify-content-between align-items-center p-2 border-bottom">
+                            <div>
+                                <strong>{{ lawyer.user.get_full_name }}</strong>
+                                <small class="text-muted d-block">{{ lawyer.bar_council_id }} &bull; {{
+                                    lawyer.experience_years }} yrs</small>
+                            </div>
+                            <div>
+                                <form method="post" action="{% url 'dashboard:admin_verify_lawyer' lawyer.id %}"
+                                    class="d-inline">
+                                    {% csrf_token %}
+                                    <button name="action" value="verify" class="btn btn-sm btn-success"><i
+                                            class="bi bi-check"></i></button>
+                                    <button name="action" value="reject" class="btn btn-sm btn-danger"><i
+                                            class="bi bi-x"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <p class="text-muted text-center mb-0">No pending verifications</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Stats -->
+            <div class="col-lg-6">
+                <div class="card-custom h-100">
+                    <div class="card-header-custom">
+                        <i class="bi bi-bar-chart me-2"></i>Categories by Appointments
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-custom mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Lawyers</th>
+                                    <th>Appointments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cat in category_stats %}
+                                <tr>
+                                    <td class="fw-semibold">{{ cat.name }}</td>
+                                    <td>{{ cat.lawyer_count }}</td>
+                                    <td>{{ cat.appointment_count }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">No categories yet</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="row g-4 mt-2">
+            <div class="col-lg-8">
+                <div class="card-custom">
+                    <div class="card-header-custom">
+                        <i class="bi bi-clock-history me-2"></i>Recent Appointments
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-custom mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Ref</th>
+                                        <th>Citizen</th>
+                                        <th>Lawyer</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for apt in recent_appointments %}
+                                    <tr>
+                                        <td>APT-{{ apt.id }}</td>
+                                        <td>{{ apt.citizen.get_full_name }}</td>
+                                        <td>{{ apt.lawyer.full_name }}</td>
+                                        <td>{{ apt.appointment_date|date:"d M Y" }}</td>
+                                        <td><span class="badge {{ apt.status_badge_class }}">{{ apt.get_status_display
+                                                }}</span></td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted">No appointments yet</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card-custom">
+                    <div class="card-header-custom">
+                        <i class="bi bi-person-plus me-2"></i>Recent Users
+                    </div>
+                    <div class="card-body">
+                        {% for u in recent_users %}
+                        <div
+                            class="d-flex justify-content-between align-items-center py-2 {% if not forloop.last %}border-bottom{% endif %}">
+                            <div>
+                                <strong>{{ u.get_full_name }}</strong>
+                                <small class="d-block text-muted">{{ u.get_role_display }}</small>
+                            </div>
+                            <small class="text-muted">{{ u.created_at|date:"d M" }}</small>
+                        </div>
+                        {% empty %}
+                        <p class="text-muted text-center mb-0">No users yet</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
